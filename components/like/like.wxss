@@ -1,1 +1,20 @@
-/* components/like/like.wxss */
+/* 考虑定宽还是自适应，如果自适应可能会出现页面跳动的情况 */
+.container {
+  display: inline-flex;
+  flex-direction: row;
+  padding: 10rpx;
+}
+
+.container image {
+  width: 32rpx;
+  height: 28rpx;
+}
+
+.container text {
+  position: relative;
+  bottom: 10rpx;
+  left: 6rpx;
+  line-height: 24rpx;
+  font-size: 24rpx;
+  color: #bbb;
+}
