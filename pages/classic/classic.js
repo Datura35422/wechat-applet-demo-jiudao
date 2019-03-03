@@ -1,10 +1,7 @@
 import {HTTP} from '../../utils/http.js'
 let http = new HTTP() // 实例化对象
-Page({
 
-  /**
-   * 页面的初始数据
-   */
+Page({
   data: {
 
   },
@@ -14,7 +11,10 @@ Page({
    */
   onLoad: function (options) {
     http.request({
-      url: 'classic/lates'
+      url: 'classic/latest',
+      success: (res) => {
+        console.log(res)
+      }
     })
   },
 
