@@ -1,69 +1,69 @@
-import {HTTP} from '../../utils/http.js'
-let http = new HTTP() // 实例化对象
+import { ClassicModel } from '../../models/classic.js'
+import { LikeModel } from '../../models/like.js'
+
+let classicModel = new ClassicModel() // 实例化对象
+let likeModel = new LikeModel()
 
 Page({
   data: {
-
+    classic: null,
+    first: false,
+    latest: true,
+    likeCount: 0,
+    likeStatus: false
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    http.request({
-      url: 'classic/latest',
-      success: (res) => {
-        console.log(res)
+    classicModel.getLatest((res) => {
+      this.setData({
+        classic: res,
+        likeCount: res.fav_nums,
+        likeStatus: res.like_status
+      })
+      if (res.index === 1) {
+        this.setData({
+          first: true
+        })
       }
     })
   },
 
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
+  onLike (event) {
+    let behavior = event.detail.behavior
+    likeModel.like(behavior, this.data.classic.id, this.data.classic.type)
   },
 
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
+  onNext (event) {
+    this._updateClassic('next')
   },
 
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
+  onPrevious (event) {
+    this._updateClassic('previous')
   },
 
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
+  _updateClassic (nextOrPrevious) {
+    let index = this.data.classic.index
+    classicModel.getClassic(index, nextOrPrevious, (res) => {
+      console.log(res)
+      this._getLikeStatus(res.id, res.type)
+      let isFirst =
+        this.setData({
+          classic: res,
+          latest: classicModel.isLatest(res.index),
+          first: classicModel.isFirst(res.index)
+        })
+    })
   },
 
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
+  _getLikeStatus (artID, category) {
+    likeModel.getClassicLikeStatus(artID, category, (res) => {
+      this.setData({
+        likeCount: res.fav_nums,
+        likeStatus: res.like_status
+      })
+    })
   }
 })
