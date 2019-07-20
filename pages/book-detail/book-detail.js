@@ -1,6 +1,8 @@
 import { BookModel } from '../../models/book.js'
+import { LikeModel } from '../../models/like.js'
 
 const bookModel = new BookModel()
+const likeModel = new LikeModel()
 Page({
 
   /**
@@ -10,7 +12,8 @@ Page({
     comments: [],
     book: null,
     likeStatus: false,
-    likeCount: 0
+    likeCount: 0,
+    posting: false
   },
 
   /**
@@ -42,53 +45,24 @@ Page({
       })
     })
   },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
+  onLike(event){
+    const like_or_cancel = event.detail.behavior
+    likeModel.like(like_or_cancel, this.data.book.id, 400)
   },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
+  onFakePost(event) {
+    this.setData({
+      posting: true
+    })
   },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
+  onCancel(event) {
+    this.setData({
+      posting: false
+    })
   },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
+  handleContainer (e) {
+    console.log('handleContainer', e)
   },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
+  handleDescription (e) {
+    console.log('handleDescription', e)
   }
 })

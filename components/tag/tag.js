@@ -3,6 +3,9 @@ Component({
   /**
    * 组件的属性列表
    */
+  options: {
+    multipleSlots: true // 启用插槽
+  },
   properties: {
     text: String
   },

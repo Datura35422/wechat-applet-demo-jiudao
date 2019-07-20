@@ -10,7 +10,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* box-shadow:1px 1px 1px #e3e3e3; */
 }
 
 .title {
@@ -27,7 +26,6 @@
 .author {
   font-size: 28rpx;
   color: #999;
-  /* margin-bottom: 30rpx; */
 }
 
 .head image {
@@ -53,31 +51,18 @@
   width: 100%;
   flex-wrap: wrap;
   padding: 0 30rpx;
-  /* z-index: 999; */
 }
 
 .content {
-   text-indent: 58rpx; 
-   /* font-weight: 300; */
-   /* font-family: PingFangSC; */
+   text-indent: 58rpx;  /* 偏移量 */
    color:#000000;
    font-weight: 500;
 }
-
- /* .content::first-letter {
-  font-size: 150%;
-  font-weight: bold;
-  color: #000;
-  margin-left:50rpx;
-  margin-right:20rpx;
-   float:left; 
-}  */
 
 .headline {
   font-size: 30rpx;
   font-weight: 600;
   color: #2f2f2f;
-  /* margin-top:30rpx; */
   margin-bottom: 20rpx;
 }
 
@@ -93,7 +78,6 @@
   align-items: center;
   padding: 0 30rpx;
   justify-content: space-between;
-  /* z-index: 99; */
 }
 
 .post-fake {
@@ -123,7 +107,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* width:690rpx; */
   background-color: #fff;
   width: 100%;
   z-index: 999;
@@ -147,7 +130,6 @@
 }
 
 .share {
-  /* padding:10rpx; */
   width: 40rpx;
   height: 40rpx;
 }
@@ -187,17 +169,9 @@
   color: #aaa;
 }
 
-.comment-container > tag-cmp:first-child view {
-  background-color: #fffbdd;
+.posting-container .comment-container {
+  padding: 40rpx 30rpx 0 30rpx;
 }
-
-/* .comment-container > tag-cmp:nth-child(2) view{
-   background-color: #eefbff;
-} */
-
-/* .tag view{
-  border-radius: 15px;
-} */
 
 .tag {
   margin-right: 15rpx;
@@ -205,15 +179,15 @@
   border-radius: 15px !important;
 }
 
-.comment-container > tag-cmp:nth-child(2) view {
+.comment-container > .tag:first-child view {
+  background-color: #fffbdd;
+}
+
+.comment-container > .tag:nth-child(2) view {
   background-color: #eefbff !important;
 }
 
-.posting-container .comment-container {
-  padding: 40rpx 30rpx 0 30rpx;
-}
-
-.detail-contaner {
+.detail-container {
   width: 100%;
   display: flex;
   flex-direction: row;
