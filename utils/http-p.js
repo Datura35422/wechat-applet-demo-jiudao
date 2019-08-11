@@ -21,7 +21,7 @@ class HTTP{
   request({url, data={}, method='GET'}){ // 默认参数在必填参数之前
     // promise的精髓在于使用对象保存异步请求返回的状态和结果，promise可以将回调的结果赋值给变量，能够灵活取值 
     return new Promise((resolve, reject) => {
-      this._request(url, resolve, reject, data = {}, method )
+      this._request(url, resolve, reject, data, method )
     })
   }
   _request(url, resolve, reject, data = {}, method = 'GET') { // 必填参数在默认参数之前

@@ -213,7 +213,11 @@
 
 .tip {
   margin-top: 20rpx;
+  margin-bottom: 30rpx;
   width: 694rpx;
   height: 130rpx;
-  margin-bottom: 30rpx;
+}
+
+.shadow {
+  color: #999;
 }

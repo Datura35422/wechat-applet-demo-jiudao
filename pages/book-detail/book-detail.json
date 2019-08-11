@@ -1,6 +1,8 @@
 {
   "usingComponents": {
     "v-tag": "/components/tag/tag",
-    "v-like": "/components/like/like"
+    "v-like": "/components/like/like",
+    "v-mask": "/components/mask/mask",
+    "img-btn-cmp": "/components/image-btn/image-btn"
   }
 }
