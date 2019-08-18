@@ -48,9 +48,9 @@
   </view>
   <view class="like-container">
     <v-like bind:like="onLike" class="like" count="{{likeCount}}" like="{{likeStatus}}" />
-    <img-btn-cmp class="share-btn" open-type="share">
+    <v-img-btn class="share-btn" open-type="share">
       <image class="share" slot="img" src="/images/icon/share.png" />
-    </img-btn-cmp>
+    </v-img-btn>
     </view>
 </view>
 

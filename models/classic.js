@@ -29,7 +29,24 @@ class ClassicModel extends HTTP { // 使用继承的方式就不需要进行实�
     }else{
       sCallback(classic)
     }
-    
+  }
+
+  getMyFavor(sCallback) {
+    this.request({
+      url: 'classic/favor',
+      success: (res) => {
+        sCallback(res)
+      }
+    })
+  }
+
+  getById(cid, type, sCallback) {
+    this.request({
+      url: `classic/${type}/${cid}`,
+      success: (res) => {
+        sCallback(res)
+      }
+    })
   }
 
   isFirst(index) {

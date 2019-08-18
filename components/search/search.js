@@ -11,7 +11,7 @@ const keywordModel = new KeywordModel()
 const bookModel = new BookModel()
 
 Component({
-  behavioris: [],
+  behaviors: [paginationBev],
   properties: {
     more: {
       type: String,
@@ -25,7 +25,7 @@ Component({
     q: '',
     historyKeys: [],
     hotKeys: [],
-    finished: false,
+    searching: false,
     loading: false,
     loadingCenter: false
   },
@@ -41,43 +41,64 @@ Component({
 
   methods: {
     onCancel() {
+      this.initialize()
       this.triggerEvent('cancel')
     },
     onDelete() {
-      this.setData({
-        q: '',
-        finished: false
-      })
+      this.initialize()
+      this._closeResult()
     },
     onConfirm(e) {
       const value = e.detail.value || e.detail.text
+      this._showResult()
+      this._showLoadingCenter()
       this.setData({
-        q: value,
-        finished: true,
-        loadingCenter: true
+        q: value
       })
       bookModel.search(0, value).then(res => {
-        console.log(res)
+        this.setMoreData(res.books)
+        this.setTotal(res.total)
+        this._hideLoadingCenter()
         keywordModel.addToHistory(value)
-        this.setData({
-          dataArray: res.books,
-          loadingCenter: false
-        })
       })
     },
     loadMore() {
-      if (!this.data.q || this.data.loading) {
+      if (!this.data.q) {
         return
       }
-      this.setData({
-        loading: true
-      })
-      this.data.loading && bookModel.search(this.data.dataArray.length, this.data.q).then(res => {
-        console.log(res)
-        this.setData({
-          dataArray: this.data.dataArray.concat(res.books),
-          loading: false
+      if (this.isLocked()) {
+        return
+      }
+      if (this.hasMore()) {
+        this.locked()
+        bookModel.search(this.getCurrentStart(), this.data.q).then(res => {
+          this.unLocked()
+          this.setMoreData(res.books)
+        }, () => {
+          this.unLocked()
         })
+      }
+    },
+   
+    _showLoadingCenter() {
+      this.setData({
+        loadingCenter: true
+      })
+    },
+    _hideLoadingCenter() {
+      this.setData({
+        loadingCenter: false
+      })
+    },
+    _showResult() {
+      this.setData({
+        searching: true
+      })
+    },
+    _closeResult() {
+      this.setData({
+        searching: false,
+        q: ''
       })
     }
   }

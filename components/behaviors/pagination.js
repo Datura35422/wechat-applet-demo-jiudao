@@ -2,16 +2,15 @@ import {
   HTTP
 } from '../../utils/http.js'
 
-let paginationBev = Behavior({
-  properties: {
-
-  },
+const paginationBev = Behavior({
   data: {
     start: 0,
     count: 20,
+    total: null,
     dataArray: [],
     empty: false,
-    ending: false
+    ending: false,
+    loading: false
   },
 
   methods: {
@@ -32,6 +31,10 @@ let paginationBev = Behavior({
       return true
     },
 
+    setTotal: function() {
+      
+    },
+
     hasMore: function () {
       return !this.data.ending
     },
@@ -40,12 +43,28 @@ let paginationBev = Behavior({
       return this.data.start
     },
 
-    initPagination: function () {
+    initialize: function () {
       this.data.ending = false
       this.data.start = 0
-      this.data.dataArray = []
+      this.data.total = null
       this.setData({
-        dataArray: []
+        dataArray: [],
+        loading: false,
+        empty: false
+      })
+    },
+
+    isLocked() {
+      return this.data.loading
+    },
+    locked() {
+      this.setData({
+        loading: true
+      })
+    },
+    unLocked() {
+      this.setData({
+        loading: false
       })
     }
   }

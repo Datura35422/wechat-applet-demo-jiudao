@@ -3,6 +3,6 @@
     "v-tag": "/components/tag/tag",
     "v-like": "/components/like/like",
     "v-mask": "/components/mask/mask",
-    "img-btn-cmp": "/components/image-btn/image-btn"
+    "v-img-btn": "/components/image-btn/image-btn"
   }
 }

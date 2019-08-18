@@ -1,66 +1,80 @@
-// pages/my/my.js
+import {
+  ClassicModel
+} from '../../models/classic.js'
+import {
+  BookModel
+} from '../../models/book.js'
+
+let classicModel = new ClassicModel()
+let bookModel = new BookModel()
+
 Page({
-
-  /**
-   * 页面的初始数据
-   */
   data: {
-
+    hasUserInfo: true,
+    userInfo: null,
+    classics: [],
+    myBooksCount: 0
+  },
+  onShow() {
+    this.getMyFavor()
+    this.hasGottenUserInfo()
+    this.getMyBookCount()
   },
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad: function (options) {
-
+  getMyBookCount() {
+    bookModel.getMyBookCount().then(data => {
+      this.setData({
+        myBooksCount: data.count
+      })
+    })
   },
 
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
+  hasGottenUserInfo() {
+    wx.getSetting({
+      success: (data) => {
+        if (data.authSetting['scope.userInfo']) {
+          wx.getUserInfo({
+            success: (data) => {
+              this.setData({
+                hasUserInfo: true,
+                userInfo: data.userInfo
+              })
+            }
+          })
+        } else {
+          this.setData({
+            hasUserInfo: false
+          })
+        }
+      }
+    })
   },
 
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
+  onGetUserInfo(event) {
+    let userInfo = event.detail.userInfo
+    if (userInfo) {
+      this.setData({
+        hasUserInfo: true,
+        userInfo: userInfo
+      })
+    }
   },
 
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
+  getMyFavor() {
+    classicModel.getMyFavor((data) => {
+      this.setData({
+        classics: data
+      })
+    })
   },
 
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
+  onPreviewTap: function (event) {
+    wx.navigateTo({
+      url: '/pages/classic-detail/classic-detail?cid=' + event.detail.cid + '&type=' + event.detail.type
+    })
   },
 
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
+  onShareAppMessage() {
 
   }
 })
