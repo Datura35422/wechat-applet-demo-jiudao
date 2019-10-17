@@ -1,4 +1,5 @@
-import { config } from '../config.js'
+import { myConfig as config } from '../config.js'
+import { Base64 } from './base64.min.js'
 
 const tips = {
   1: '抱歉。出现了一个错误',
@@ -24,14 +25,15 @@ class HTTP{
       this._request(url, resolve, reject, data, method )
     })
   }
-  _request(url, resolve, reject, data = {}, method = 'GET') { // 必填参数在默认参数之前
+  _request(url, resolve, reject, data = {}, method = 'GET', noRefetch = false) { // 必填参数在默认参数之前
     wx.request({
       url: config.api_base_url + url,
       method: method,
       data: data,
       header: {
         'comtent-type': 'application/json',
-        'appkey': config.appkey
+        // 'appkey': config.appkey
+        Authorization: this._encode()
       },
       success: (res) => {
         // ES6中startsWith和endWith判断字符串中的开始和结束字符
@@ -39,9 +41,16 @@ class HTTP{
         if (code.startsWith('2')) { //code以2开头
           resolve(res.data) // 已成功回调函数将请求到的数据传出
         }else{ // 服务器异常处理
-          reject() // 内部处理不需要传参，但是改变promise的状态
-          const error_code = res.data.error_code
-          this._show_error(error_code)
+          // 二次重发
+          if (code == '403') {
+            if (!noRefetch) {
+              this._refetch(url, resolve, reject, data, method)
+            }
+          } else {
+            reject() // 内部处理不需要传参，但是改变promise的状态
+            const error_code = res.data.error_code
+            this._show_error(error_code)
+          }
         }
       },
       fail: (res) => {
@@ -49,6 +58,12 @@ class HTTP{
         this._show_error(1)
       }
     })
+  }
+
+  _refetch(url, resolve, reject, data, method) {
+    const { LoginModel } = require('../models/login.js')
+    const loginModel = new LoginModel()
+    loginModel.get
   }
 
   _show_error (error_code) { //自主定义私有方法
@@ -61,6 +76,13 @@ class HTTP{
       icon: 'none',
       duration: 2000
     })
+  }
+
+  _encode() {
+    // Authorization: 'Basic base64(account:password)'
+    const token = wx.getStorageSync('token')
+    const base64 = Base64.encode(token + ':')
+    return `Basic ${base64}`
   }
 }
 

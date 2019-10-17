@@ -1,6 +1,8 @@
-import { ClassicModel } from '../../models/classic.js'
-import { LikeModel } from '../../models/like.js'
+import { LoginModel } from '../../models/login.js'
+import { ClassicModel } from '../../models/classic-p.js'
+import { LikeModel } from '../../models/like-p.js'
 
+const loginModel = new LoginModel()
 let classicModel = new ClassicModel() // 实例化对象
 let likeModel = new LikeModel()
 
@@ -13,7 +15,8 @@ Page({
     likeStatus: false
   },
 
-  onLoad: function (options) {
+  onLoad() {
+    loginModel.getToken()
     classicModel.getLatest((res) => {
       this.setData({
         classic: res,

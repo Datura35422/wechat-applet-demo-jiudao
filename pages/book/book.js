@@ -15,7 +15,6 @@ Page({
     const hotList = bookModel.getHotList()
     hotList.then(res => {
         // 接受第一次的promise对象请求结果,api getHotList请求结果
-        console.log(res)
         this.setData({
           books: res
         })
